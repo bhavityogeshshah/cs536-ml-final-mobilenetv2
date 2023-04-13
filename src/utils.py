@@ -1,3 +1,5 @@
+from torch import nn
+
 class InvertedResidual(nn.Module):
   def __init__(self,input, output, stride, expand_ratio):
     super().__init__()
@@ -49,3 +51,28 @@ def make_divisible(value, divisor):
     new_value += divisor
   return int(new_value)
 
+
+
+class ConvBN(nn.Module):
+  def __init__(self, input_channel, output_channel, stride):
+    super().__init__()
+    self.conv = nn.Sequential(
+        nn.Conv2d(input_channel,output_channel,3, stride,1,bias=False),
+        nn.BatchNorm2d(output_channel),
+        nn.ReLU6(inplace=True)
+  )
+  
+  def forward(self,x):
+    return self.conv(x)
+
+class Conv1x1BN(nn.Module):
+  def __init__(self, input_channel, output_channel):
+    super().__init__()
+    self.conv = nn.Sequential(
+        nn.Conv2d(input_channel,output_channel,1,1,0,bias=False),
+        nn.BatchNorm2d(output_channel),
+        nn.ReLU6(inplace=True)
+  )
+  
+  def forward(self,x):
+    return self.conv(x)
