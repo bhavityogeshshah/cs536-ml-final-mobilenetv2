@@ -7,6 +7,7 @@ import math
 import torch.optim as optim
 import time
 import os
+from utils import save_vars
 
 def train(batch_size=16, lr=0.001, num_epochs=2,dataset='cifar10'):
     """
@@ -37,14 +38,16 @@ def train(batch_size=16, lr=0.001, num_epochs=2,dataset='cifar10'):
                                             download=True, transform=transform)
         testset = torchvision.datasets.CIFAR10(root='./data', train=False,
                                             download=True, transform=transform)
-        save_dir = 'checkpoints/cifar10/'
+        save_dir = 'checkpoints/original/cifar10/'
+        metrics_dir = 'metrics/original/cifar10/'
 
     elif dataset=='cifar100':
         trainset = torchvision.datasets.CIFAR100(root='./data', train=True,
                                             download=True, transform=transform)
         testset = torchvision.datasets.CIFAR100(root='./data', train=False,
                                             download=True, transform=transform)
-        save_dir = 'checkpoints/cifar100/'
+        save_dir = 'checkpoints/original/cifar100/'
+        metrics_dir = 'metrics/original/cifar10/'
 
     trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size,
                                         shuffle=True, num_workers=2)
@@ -55,6 +58,7 @@ def train(batch_size=16, lr=0.001, num_epochs=2,dataset='cifar10'):
 
     epoch_train_loss = []
     epoch_train_acc = []
+    epoch_train_time = []
     model.to(device)
     train_start_time = time.time()
     for epoch in range(num_epochs):
@@ -89,8 +93,20 @@ def train(batch_size=16, lr=0.001, num_epochs=2,dataset='cifar10'):
         epoch_train_loss.append(train_loss)
         epoch_train_acc.append(train_acc)
         epoch_time = epoch_end_time - epoch_start_time
+        epoch_train_time.append(epoch_time)
 
-        # to-do : code to save the above metrics
+        # Dumping metrics
+        loss_name = f'loss_{epoch}.pkl'
+        save_path = os.path.join(metrics_dir, loss_name)
+        save_vars(epoch_train_loss, save_path)
+
+        acc_name = f'acc_{epoch}.pkl'
+        save_path = os.path.join(metrics_dir, acc_name)
+        save_vars(epoch_train_acc, save_path)
+
+        time_name = f'time_{epoch}.pkl'
+        save_path = os.path.join(metrics_dir, time_name)
+        save_vars(epoch_train_time, save_path)
         
         print('Training: Loss: {} Accuracy: {} Time: {}s'.format(train_loss, train_acc, epoch_time))
 
