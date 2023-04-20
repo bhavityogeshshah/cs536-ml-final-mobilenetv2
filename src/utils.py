@@ -1,4 +1,5 @@
 from torch import nn
+import pickle
 
 class InvertedResidual(nn.Module):
   def __init__(self,input, output, stride, expand_ratio):
@@ -76,3 +77,12 @@ class Conv1x1BN(nn.Module):
   
   def forward(self,x):
     return self.conv(x)
+
+def save_vars(var,filepath):
+  with open(filepath, 'wb') as f:
+    pickle.dump(var, f)
+
+def read_vars(filepath):
+  with open(filepath, 'rb') as f:
+    loaded = pickle.load(f)
+  return loaded
