@@ -52,10 +52,10 @@ def train(batch_size=16, lr=0.001, num_epochs=2,dataset='cifar10'):
 
     trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size,
                                         shuffle=True, num_workers=2)
-    valloader = torch.utils.data.DataLoader(testset, batch_size=batch_size,
-                                        shuffle=True, num_workers=2)
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
+    if not os.path.exists(metrics_dir):
+        os.makedirs(metrics_dir)
 
     epoch_train_loss = []
     epoch_train_acc = []

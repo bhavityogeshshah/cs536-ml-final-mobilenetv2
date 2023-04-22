@@ -4,10 +4,12 @@ import torch
 import torchvision
 import sklearn.metrics as skm
 import matplotlib as plt
-import torchvision.transforms as transform
+import torchvision.transforms as transforms
 
 
 import os
+
+from model import MobileNetV2
 
 def test(dataset='cifar10',epoch='40',batch_size = 16):
   device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
@@ -16,13 +18,19 @@ def test(dataset='cifar10',epoch='40',batch_size = 16):
   y_pred = []
   correct = 0
   total = 0
+  transform = transforms.Compose(
+        [transforms.ToTensor(),
+            transforms.RandomHorizontalFlip(),
+            transforms.Resize((224,224)),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        ])
   if dataset=='cifar10':
-    save_dir = 'checkpoints/cifar10/'
+    save_dir = 'checkpoints/original/cifar10/'
     testset = torchvision.datasets.CIFAR10(root='./data', train=False,
                                         download=True, transform=transform)
   elif dataset=='cifar100':
-    save_dir = 'checkpoints/cifar100/'
-    testset = torchvision.datasets.CIFAR10(root='./data', train=False,
+    save_dir = 'checkpoints/original/cifar100/'
+    testset = torchvision.datasets.CIFAR100(root='./data', train=False,
                                         download=True, transform=transform)
     
   testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size,
@@ -30,8 +38,10 @@ def test(dataset='cifar10',epoch='40',batch_size = 16):
   
   checkpoint_name = f'epoch_{epoch}.pth'
   checkpoint_path = os.path.join(save_dir, checkpoint_name)
-
-  model = torch.load(checkpoint_path)
+  
+  model = MobileNetV2(num_classes=10)
+  checkpoint = torch.load(checkpoint_path)
+  model.load_state_dict(checkpoint['model_state_dict'])
   model.to(device)
   model.eval()
   with torch.no_grad():
@@ -49,7 +59,7 @@ def test(dataset='cifar10',epoch='40',batch_size = 16):
 
   cm = skm.confusion_matrix(y_true, y_pred)
   skm.ConfusionMatrixDisplay(cm).plot()
-  plt.savefig(save_dir+'plot.png')
+  # plt.savefig(save_dir+'plot.png')
   print(f'Accuracy of the network on the test images: {100 * correct // total} %')
 
 
@@ -60,4 +70,4 @@ if __name__ == '__main__':
 
     args = argParser.parse_args()
     ep = int(args.epochs)
-    test(ep,args.data_set)
+    test(args.data_set,ep)
