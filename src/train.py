@@ -8,6 +8,7 @@ import torch.optim as optim
 import time
 import os
 from utils import save_vars
+import argparse
 
 def train(batch_size=16, lr=0.001, num_epochs=2,dataset='cifar10'):
     """
@@ -22,7 +23,7 @@ def train(batch_size=16, lr=0.001, num_epochs=2,dataset='cifar10'):
         10 epochs.
         Dumps the loss and accuracy vs epoch data in a pickle file
     """
-
+    
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
     model = MobileNetV2(num_classes=10)
     loss_fn = nn.CrossEntropyLoss()
@@ -113,3 +114,17 @@ def train(batch_size=16, lr=0.001, num_epochs=2,dataset='cifar10'):
     train_end_time = time.time()
     total_train_time = train_end_time-train_start_time
     print('Total Training time: {}'.format(total_train_time))
+
+
+if __name__ == '__main__':
+    argParser = argparse.ArgumentParser()
+    argParser.add_argument("-b", "--batch_size", help="Batch size")
+    argParser.add_argument("-lr", "--learning_rate", help="Learning rate")
+    argParser.add_argument("-e", "--epochs", help="Number of epochs")
+    argParser.add_argument("-d", "--data_set", help="Data set (cifar10/cifar10)")
+
+    args = argParser.parse_args()
+    b = int(args.batch_size)
+    lr = float(args.learning_rate)
+    ep = int(args.epochs)
+    train(b,lr,ep,args.data_set)

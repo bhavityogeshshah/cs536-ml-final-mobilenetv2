@@ -1,4 +1,6 @@
 from utils import InvertedResidual, Conv1x1BN, ConvBN, make_divisible
+from torch import nn
+import torch
 
 class MobileNetV2(nn.Module):
   def __init__(
