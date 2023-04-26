@@ -48,7 +48,7 @@ def train(batch_size=16, lr=0.001, num_epochs=2,dataset='cifar10'):
         testset = torchvision.datasets.CIFAR100(root='./data', train=False,
                                             download=True, transform=transform)
         save_dir = 'checkpoints/original/cifar100/'
-        metrics_dir = 'metrics/original/cifar10/'
+        metrics_dir = 'metrics/original/cifar100/'
 
     trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size,
                                         shuffle=True, num_workers=2)
@@ -82,13 +82,15 @@ def train(batch_size=16, lr=0.001, num_epochs=2,dataset='cifar10'):
             running_loss += loss.item()*inputs.size(0)
             running_corrects += torch.sum(labels==preds).item()
         if epoch%10 == 0:
-            checkpoint_name = f'epoch_{epoch}.pth'
-            checkpoint_path = os.path.join(save_dir, checkpoint_name)
-            torch.save({
-                'model_state_dict': model.state_dict(),
-                'optimizer_state_dict': optimizer.state_dict(),
-                'epoch': epoch,
-            }, checkpoint_path)
+            # checkpoint_name = f'epoch_{epoch}.pth'
+            # checkpoint_path = os.path.join(save_dir, checkpoint_name)
+            # torch.save({
+            #     'model_state_dict': model.state_dict(),
+            #     'optimizer_state_dict': optimizer.state_dict(),
+            #     'epoch': epoch,
+            # }, checkpoint_path)
+            save_path = os.path.join(save_dir,save_name)
+            save_name = f'model_{epoch}.pt'
         train_loss = running_loss/len(trainloader.sampler)
         train_acc = running_corrects/len(trainloader.sampler)
         epoch_train_loss.append(train_loss)

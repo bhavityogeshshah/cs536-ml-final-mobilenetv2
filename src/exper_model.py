@@ -7,7 +7,7 @@ class MobileNetV2(nn.Module):
       self, 
       num_classes=1000,
       width = 1,
-      input_size=224,
+      input_size=32, # changed from 224 to 32
       dropout=0.2
       ):
     super().__init__()
@@ -18,8 +18,8 @@ class MobileNetV2(nn.Module):
 
     inverted_residual_setting = [
         [1, 16, 1, 1],
-        [6, 24, 2, 2],
-        [6, 32, 3, 2],
+        # [6, 24, 2, 2], removing one inverted residual block
+        [6, 32, 3, 1], # changed the stride from 2 to 1
         [6, 64, 4, 2],
         [6, 96, 3, 1],
         [6, 160, 3, 2],
@@ -33,7 +33,7 @@ class MobileNetV2(nn.Module):
     self.last_channel = make_divisible(self.last_channel*max(width,1), round_nearest)
 
     features = [
-      ConvBN(3,input_channel,2)
+      ConvBN(3,input_channel,1)  # changed the stride from 2 to 1
     ]
 
     for t, c, n, s in inverted_residual_setting:

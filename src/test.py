@@ -36,12 +36,12 @@ def test(dataset='cifar10',epoch='40',batch_size = 16):
   testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size,
                                       shuffle=True, num_workers=2)  
   
-  checkpoint_name = f'epoch_{epoch}.pth'
+  checkpoint_name = f'model_{epoch}.pt'
   checkpoint_path = os.path.join(save_dir, checkpoint_name)
-  
-  model = MobileNetV2(num_classes=10)
-  checkpoint = torch.load(checkpoint_path)
-  model.load_state_dict(checkpoint['model_state_dict'])
+  model = torch.load(checkpoint_path)
+  # model = MobileNetV2(num_classes=10)
+  # # checkpoint = torch.load(checkpoint_path)
+  # # model.load_state_dict(checkpoint['model_state_dict'])
   model.to(device)
   model.eval()
   with torch.no_grad():
@@ -57,16 +57,15 @@ def test(dataset='cifar10',epoch='40',batch_size = 16):
           y_pred = y_pred + predicted.to('cpu').detach().numpy().tolist()
           correct += (predicted == labels).sum().item()
 
-  cm = skm.confusion_matrix(y_true, y_pred)
-  skm.ConfusionMatrixDisplay(cm).plot()
-  # plt.savefig(save_dir+'plot.png')
+  # cm = skm.confusion_matrix(y_true, y_pred)
+  # skm.ConfusionMatrixDisplay(cm).plot()
   print(f'Accuracy of the network on the test images: {100 * correct // total} %')
 
 
 if __name__ == '__main__':
     argParser = argparse.ArgumentParser()
     argParser.add_argument("-e", "--epochs", help="Number of epochs")
-    argParser.add_argument("-d", "--data_set", help="Data set (cifar10/cifar10)")
+    argParser.add_argument("-d", "--data_set", help="Data set (cifar10/cifar100)")
 
     args = argParser.parse_args()
     ep = int(args.epochs)
