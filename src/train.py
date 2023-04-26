@@ -89,8 +89,9 @@ def train(batch_size=16, lr=0.001, num_epochs=2,dataset='cifar10'):
             #     'optimizer_state_dict': optimizer.state_dict(),
             #     'epoch': epoch,
             # }, checkpoint_path)
-            save_path = os.path.join(save_dir,save_name)
             save_name = f'model_{epoch}.pt'
+            save_path = os.path.join(save_dir,save_name)
+            torch.save(model, save_path)
         train_loss = running_loss/len(trainloader.sampler)
         train_acc = running_corrects/len(trainloader.sampler)
         epoch_train_loss.append(train_loss)
