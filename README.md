@@ -15,55 +15,56 @@ git clone https://github.com/bhavityogeshshah/cs536-ml-final-mobilenetv2.git
 pip3 -r install requirements.txt
 ```
 
-```
+
 Goto src folder
+```
 cd src
 ```
 
-```
-CIFAR-10
-```
 
+## Original CIFAR-10
+
+Train:
 ```
 python train.py -b 16 -lr 0.001 -e 50 -d cifar10
 ```
-
+Test:
 ```
 python test.py -b 16 -lr 0.001 -e 50 -d cifar10
 ```
 
-```
-Experimental Model
-```
 
+## Experimental Model
+
+Train:
 ```
 python train_exp.py -b 16 -lr 0.001 -e 50 -d cifar10
 ```
-
+Test:
 ```
 python test_expr.py -e 50 -d cifar10
 ```
 
-```
-CIFAR-100
-```
 
+## Original CIFAR-100
+
+Train:
 ```
 python train.py -b 16 -lr 0.001 -e 50 -d cifar100
 ```
-
+Test:
 ```
 python test.py -b 16 -lr 0.001 -e 50 -d cifar100
 ```
 
-```
-Experimental Model
-```
 
+## Experimental Model
+
+Train:
 ```
 python train_exp.py -b 16 -lr 0.001 -e 50 -d cifar100
 ```
-
+Test:
 ```
 python test_expr.py -e 50 -d cifar100
 ```
