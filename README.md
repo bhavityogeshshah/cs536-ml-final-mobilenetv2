@@ -1,10 +1,17 @@
 # cs536-ml-final-mobilenetv2
 
 ### Team Members
-|NAME|BNUMBER|EMAIL|
---- | --- | --- 
-Apoorv Yadav|B00977654|ayadav7@binghamton.edu 
-Bhavit Yogesh Shah|B00979233|bshah5@binghamton.edu
+|NAME|BNUMBER|EMAIL|USERNAME|
+--- | --- | --- |---
+Apoorv Yadav|B00977654|ayadav7@binghamton.edu |ayadav16
+Bhavit Yogesh Shah|B00979233|bshah5@binghamton.edu|bhavityogeshshah
+
+### Contribution by each member:
+
+Both team member have contributed equally and done their part of the project. They have decided on the experiment together and wrote the code for it. Please refer git log history for exact contribution for each member. 
+
+### Steps to Run:
+Please contact with the team incase the code fails to run due to dependency error.
 
 
 ```
